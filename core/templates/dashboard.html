@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tableau de bord - Sahri Style</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Georgia, 'Times New Roman', serif; background: #0d0d0d; color: #f4ecdf; }
+    .navbar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 18px 50px; background: #0d0d0d; border-bottom: 1px solid #2a2a2a;
+    }
+    .logo { font-size: 22px; letter-spacing: 2px; }
+    .nav-links a {
+        color: #d8c9a8; text-decoration: none; font-size: 14px; margin-left: 30px; letter-spacing: 1px;
+    }
+    .nav-links a:hover, .nav-links a.active { color: #cfa050; }
+    .container { padding: 40px 6%; }
+    h1 { font-weight: normal; font-size: 28px; margin-bottom: 30px; }
+    h2 { font-weight: normal; font-size: 20px; margin: 40px 0 15px 0; color: #cfa050; }
+    .stats { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+    .stat-card {
+        background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px;
+        padding: 20px 30px; flex: 1; min-width: 180px;
+    }
+    .stat-card .num { font-size: 30px; color: #cfa050; }
+    .stat-card .label { font-size: 13px; color: #a89a83; margin-top: 5px; }
+    table {
+        width: 100%; border-collapse: collapse; background: #1a1a1a; border-radius: 6px; overflow: hidden;
+    }
+    th, td {
+        padding: 12px 16px; text-align: left; border-bottom: 1px solid #2a2a2a; font-size: 14px;
+    }
+    th { background: #0d0d0d; color: #cfa050; font-weight: normal; letter-spacing: 1px; }
+    tr:hover { background: #222; }
+    .low { color: #e07a5f; font-weight: bold; }
+    .ok { color: #a89a83; }
+    .status-badge {
+        padding: 4px 12px; border-radius: 12px; font-size: 12px;
+    }
+    .status-nouvelle { background: #cfa050; color: #0d0d0d; }
+    .status-confirmee { background: #4a7c59; color: white; }
+    .status-livree { background: #2d5a3d; color: white; }
+    .status-annulee { background: #7a2e2e; color: white; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">Sahri Style — Admin</div>
+    <div class="nav-links">
+        <a href="{% url 'home' %}">Site</a>
+        <a href="{% url 'dashboard' %}" class="active">Tableau de bord</a>
+        <a href="/admin/">Django Admin</a>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>Tableau de bord</h1>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="num">{{ total_orders }}</div>
+            <div class="label">Commandes totales</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">{{ total_products }}</div>
+            <div class="label">Produits au catalogue</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">{{ low_stock|length }}</div>
+            <div class="label">Produits en stock faible (&lt;10)</div>
+        </div>
+    </div>
+
+    <h2>Dernières commandes</h2>
+    <table>
+        <tr>
+            <th>N°</th><th>Client</th><th>Téléphone</th><th>Statut</th><th>Date</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>#{{ order.id }}</td>
+            <td>{{ order.customer.full_name }}</td>
+            <td>{{ order.customer.phone }}</td>
+            <td><span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span></td>
+            <td>{{ order.created_at|date:"d/m/Y H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Aucune commande pour le moment.</td></tr>
+        {% endfor %}
+    </table>
+
+    <h2>Stock des produits</h2>
+    <table>
+        <tr>
+            <th>Produit</th><th>Catégorie</th><th>Prix</th><th>Stock</th><th>Disponible</th>
+        </tr>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.category.name|default:"-" }}</td>
+            <td>{{ product.price }} DH</td>
+            <td class="{% if product.stock < 10 %}low{% else %}ok{% endif %}">{{ product.stock }}</td>
+            <td>{% if product.is_available %}Oui{% else %}Non{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>

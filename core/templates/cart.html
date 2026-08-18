@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Mon panier - Sahri Style</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #0b0b0b;
+            color: #f5f0e6;
+            font-family: Georgia, serif;
+        }
+
+        header {
+            height: 70px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: #f5f0e6;
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            color: #d9a441;
+        }
+
+        .container {
+            width: 85%;
+            max-width: 1100px;
+            margin: 60px auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #d9a441;
+            font-size: 38px;
+            margin-bottom: 50px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #333;
+            padding: 25px;
+            margin-bottom: 20px;
+            background: #151515;
+        }
+
+        .product-name {
+            font-size: 22px;
+            width: 25%;
+        }
+
+        .quantity {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .quantity a {
+            text-decoration: none;
+            background: #d9a441;
+            color: #000;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+
+        .quantity span {
+            font-size: 18px;
+            min-width: 25px;
+            text-align: center;
+        }
+
+        .subtotal {
+            font-size: 18px;
+            width: 15%;
+            text-align: right;
+        }
+
+        .delete {
+            margin-left: 20px;
+        }
+
+        .delete a {
+            color: #e57373;
+            text-decoration: none;
+        }
+
+        .total {
+            text-align: right;
+            margin-top: 40px;
+            font-size: 26px;
+        }
+
+        .total strong {
+            color: #d9a441;
+        }
+
+        .actions {
+            margin-top: 40px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            background: #d9a441;
+            color: #000;
+            text-decoration: none;
+            padding: 14px 25px;
+            font-size: 16px;
+        }
+
+        .empty {
+            text-align: center;
+            font-size: 22px;
+            margin-top: 80px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">Sahri Style</div>
+
+    <nav>
+        <a href="{% url 'home' %}">Accueil</a>
+        <a href="{% url 'catalogue' %}">Boutique</a>
+        <a href="{% url 'cart' %}">🛒 Panier</a>
+    </nav>
+</header>
+
+
+<div class="container">
+
+    <h1>Mon panier 🛒</h1>
+
+    {% if products %}
+
+        {% for item in products %}
+
+            <div class="cart-item">
+
+                <div class="product-name">
+                    {{ item.product.name }}
+                </div>
+
+
+                <div class="quantity">
+
+                    <a href="{% url 'decrease_cart' item.product.id %}">
+                        −
+                    </a>
+
+                    <span>
+                        {{ item.quantity }}
+                    </span>
+
+                    <a href="{% url 'increase_cart' item.product.id %}">
+                        +
+                    </a>
+
+                </div>
+
+
+                <div class="subtotal">
+                    {{ item.subtotal }} DH
+                </div>
+
+
+                <div class="delete">
+                    <a href="{% url 'remove_from_cart' item.product.id %}">
+                        🗑 Supprimer
+                    </a>
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+
+        <div class="total">
+            Total général :
+            <strong>{{ total }} DH</strong>
+        </div>
+
+
+        <div class="actions">
+
+            <a href="{% url 'catalogue' %}" class="btn">
+                ← Continuer mes achats
+            </a>
+
+            <div class="actions">
+
+    <a href="{% url 'catalogue' %}" class="btn">
+        ← Continuer mes achats
+    </a>
+
+    <a href="{% url 'checkout' %}" class="btn">
+        Passer la commande →
+    </a>
+
+</div>
+        </div>
+
+
+    {% else %}
+
+        <div class="empty">
+
+            <p>Votre panier est vide 🛒</p>
+
+            <a href="{% url 'catalogue' %}" class="btn">
+                Voir la boutique
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

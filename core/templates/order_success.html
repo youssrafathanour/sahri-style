@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Commande confirmée - Sahri Style</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #0b0b0b;
+            color: #f5f0e6;
+            font-family: Georgia, serif;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        .box {
+            background: #151515;
+            border: 1px solid #333;
+            padding: 50px 30px;
+        }
+
+        .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #d9a441;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .order-number {
+            margin: 25px 0;
+            padding: 15px;
+            border: 1px solid #444;
+            background: #0b0b0b;
+            font-size: 20px;
+        }
+
+        .order-number strong {
+            color: #d9a441;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 14px 30px;
+            background: #d9a441;
+            color: #000;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background: #e8bd6a;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="box">
+
+            <div class="icon">
+                ✅
+            </div>
+
+            <h1>Commande confirmée !</h1>
+
+            <p>
+                Merci pour votre commande chez
+                <strong>Sahri Style</strong>.
+            </p>
+
+            <p>
+                Votre commande a été enregistrée avec succès.
+            </p>
+
+            <div class="order-number">
+                Numéro de commande :
+                <strong>#{{ order.id }}</strong>
+            </div>
+
+            <p>
+                Nous allons traiter votre commande prochainement.
+            </p>
+
+            <a href="{% url 'catalogue' %}" class="btn">
+                ← Retour à la boutique
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ product.name }} - Sahri Style</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Georgia, 'Times New Roman', serif; background: #0d0d0d; color: #f4ecdf; }
+
+    .navbar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 18px 50px; background: #0d0d0d; border-bottom: 1px solid #2a2a2a;
+    }
+    .logo { font-size: 22px; letter-spacing: 2px; color: #f4ecdf; }
+    .nav-links { display: flex; gap: 35px; }
+    .nav-links a { color: #d8c9a8; text-decoration: none; font-size: 14px; letter-spacing: 1px; }
+    .nav-links a:hover { color: #cfa050; }
+
+    .breadcrumb { padding: 20px 8%; font-size: 13px; color: #a89a83; }
+    .breadcrumb a { color: #cfa050; text-decoration: none; }
+
+    .detail {
+        display: flex; gap: 50px; padding: 20px 8% 70px 8%; flex-wrap: wrap;
+    }
+    .detail-img {
+        flex: 1; min-width: 320px; background: #e3d9c4; border-radius: 4px;
+        min-height: 480px; display: flex; align-items: center; justify-content: center;
+        font-size: 100px; overflow: hidden;
+    }
+    .detail-img img { width: 100%; height: 100%; object-fit: cover; }
+
+    .detail-info { flex: 1; min-width: 300px; padding-top: 10px; }
+    .detail-info h1 { font-size: 30px; font-weight: normal; margin-bottom: 15px; }
+    .detail-price { margin-bottom: 20px; }
+    .promo { color: #cfa050; font-weight: bold; font-size: 24px; margin-right: 12px; }
+    .old-price { text-decoration: line-through; color: #777; font-size: 17px; }
+    .price { font-size: 24px; color: #f4ecdf; }
+
+    .detail-desc { color: #c9bda4; line-height: 1.8; margin-bottom: 25px; font-size: 15px; }
+    .detail-meta { margin-bottom: 30px; font-size: 14px; color: #a89a83; }
+    .detail-meta strong { color: #f4ecdf; }
+
+    .btn-cart {
+        display: inline-block; padding: 14px 40px; background: #cfa050; color: #0d0d0d;
+        text-decoration: none; font-size: 14px; letter-spacing: 1px; border: none;
+        border-radius: 2px; cursor: pointer;
+    }
+    .btn-cart:hover { background: #b8894a; }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">Sahri Style</div>
+    <div class="nav-links">
+        <a href="{% url 'home' %}">Accueil</a>
+        <a href="{% url 'catalogue' %}">Boutique</a>
+        <a href="#">Suivi colis</a>
+        <a href="#">Contact</a>
+    </div>
+</nav>
+
+<div class="breadcrumb">
+    <a href="{% url 'catalogue' %}">Boutique</a> / {{ product.name }}
+</div>
+
+<div class="detail">
+    <div class="detail-img">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}👗{% endif %}
+    </div>
+    <div class="detail-info">
+        <h1>{{ product.name }}</h1>
+        <div class="detail-price">
+            {% if product.promo_price %}
+                <span class="promo">{{ product.promo_price }} DH</span>
+                <span class="old-price">{{ product.price }} DH</span>
+            {% else %}
+                <span class="price">{{ product.price }} DH</span>
+            {% endif %}
+        </div>
+        {% if product.description %}
+            <p class="detail-desc">{{ product.description }}</p>
+        {% endif %}
+        <div class="detail-meta">
+            {% if product.size %}<div><strong>Taille :</strong> {{ product.size }}</div>{% endif %}
+            {% if product.category %}<div><strong>Catégorie :</strong> {{ product.category.name }}</div>{% endif %}
+        </div>
+        <a href="{% url 'add_to_cart' product.id %}" class="btn-cart">
+    Ajouter au panier
+</a>
+    </div>
+</div>
+
+</body>
+</html>

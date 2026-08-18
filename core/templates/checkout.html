@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Commande - Sahri Style</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #0b0b0b;
+            color: #f5f0e6;
+            font-family: Georgia, serif;
+        }
+
+        header {
+            height: 70px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: #f5f0e6;
+            text-decoration: none;
+            margin-left: 30px;
+        }
+
+        nav a:hover {
+            color: #d9a441;
+        }
+
+        .container {
+            width: 85%;
+            max-width: 1100px;
+            margin: 50px auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #d9a441;
+            margin-bottom: 40px;
+        }
+
+        .checkout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .box {
+            background: #151515;
+            border: 1px solid #333;
+            padding: 30px;
+        }
+
+        .box h2 {
+            color: #d9a441;
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px;
+            background: #0b0b0b;
+            border: 1px solid #444;
+            color: white;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #d9a441;
+        }
+
+        .product {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .total {
+            text-align: right;
+            margin-top: 25px;
+            font-size: 24px;
+        }
+
+        .total strong {
+            color: #d9a441;
+        }
+
+        .error {
+            background: #4a1f1f;
+            border: 1px solid #a94442;
+            padding: 12px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 30px;
+            padding: 15px;
+            border: none;
+            background: #d9a441;
+            color: #000;
+            font-size: 17px;
+            cursor: pointer;
+            font-family: Georgia, serif;
+        }
+
+        button:hover {
+            background: #e8bd6a;
+        }
+
+        @media (max-width: 700px) {
+            .checkout {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 0 20px;
+            }
+
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        Sahri Style
+    </div>
+
+    <nav>
+        <a href="{% url 'catalogue' %}">Boutique</a>
+        <a href="{% url 'cart' %}">🛒 Panier</a>
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+    <h1>Finaliser ma commande</h1>
+
+    {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+    {% endif %}
+
+
+    <div class="checkout">
+
+        <!-- Informations client -->
+
+        <div class="box">
+
+            <h2>Informations client</h2>
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <label>Nom complet *</label>
+
+                <input
+                    type="text"
+                    name="full_name"
+                    placeholder="Votre nom complet"
+                    required
+                >
+
+
+                <label>Téléphone *</label>
+
+                <input
+                    type="tel"
+                    name="phone"
+                    placeholder="06XXXXXXXX"
+                    required
+                >
+
+
+                <label>Adresse</label>
+
+                <input
+                    type="text"
+                    name="address"
+                    placeholder="Votre adresse"
+                >
+
+
+                <label>Ville</label>
+
+                <input
+                    type="text"
+                    name="city"
+                    placeholder="Casablanca"
+                >
+
+
+                <button type="submit">
+                    Confirmer la commande
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- Résumé de la commande -->
+
+        <div class="box">
+
+            <h2>Résumé de la commande</h2>
+
+            {% for item in products %}
+
+                <div class="product">
+
+                    <span>
+                        {{ item.product.name }}
+                        × {{ item.quantity }}
+                    </span>
+
+                    <span>
+                        {{ item.subtotal }} DH
+                    </span>
+
+                </div>
+
+            {% endfor %}
+
+
+            <div class="total">
+
+                Total :
+
+                <strong>
+                    {{ total }} DH
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
