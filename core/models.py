@@ -76,8 +76,6 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.full_name
-
-
 class Order(models.Model):
     STATUS_CHOICES = [
         ('nouvelle', 'Nouvelle'),
