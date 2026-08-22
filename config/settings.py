@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-d2zchlwlews0th1gk=02gm1p*fy5&683cvu1%f^pq4a9yjnohv
 DEBUG = True
 
 ALLOWED_HOSTS = ['sahri-style-production.up.railway.app', 'localhost', '127.0.0.1']
-
+CSRF_TRUSTED_ORIGINS = ['https://sahri-style-production.up.railway.app']
 
 # Application definition
 
